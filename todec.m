@@ -1,3 +1,2 @@
-function m = todec(M, n)
-	k = 2.^(0:n-1);
+function m = todec(M, k)
 	m = (k * M)';
