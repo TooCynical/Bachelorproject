@@ -3,7 +3,7 @@ function b = isMinimalUMTetra2(m, n)
 b = 0;
 originalm = m;
 % Precalculating this saves quite some time...
-perms3 = [3 3 2 2 1 1;2 1 3 1 2 3;1 2 1 3 3 2];
+global perms3;
 
 % Loop over each possible choice of origin.
 for k=0:3    

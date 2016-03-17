@@ -30,4 +30,3 @@ end
 % If nothing is wrong return one.
 t = 1;
 end
-

@@ -67,4 +67,3 @@ for m=UT
 end
 
 amts = [totalAmtChecked; totalUltrametric; totalMinimal; totalMinimaln];
-
