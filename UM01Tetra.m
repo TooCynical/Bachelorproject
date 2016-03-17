@@ -1,4 +1,4 @@
-function [UTn, UT, amts] = UM01Tetra(n)
+function [amts, UTn, UT] = UM01Tetra(n)
 
 % First get the minimal acute triangles in order.
 L = SortedAcute01Triang(n);
@@ -10,6 +10,7 @@ UTn = [];
 totalAmtChecked = 0;
 totalUltrametric = 0;
 totalMinimal = 0;
+totalMinimaln = 0;
 
 
 % Loop through all combinations t = [v1 v2] where [v1 v2] is
@@ -42,7 +43,7 @@ end
 
 % Now filter for minimality.
 for m=rawUT
-    if isMinimalUMTetra(m ,n)==1
+    if isMinimalUMTetra2(m ,n)==1
         totalMinimal = totalMinimal + 1;
         UT = [UT m];  %#ok<AGROW>
     end
@@ -51,12 +52,11 @@ end
 % Finally filter for dimension.
 for m=UT
 	M = to01(m, n);
-	if isequal(M(n, :), [0 0 0])
-		M;
-	else 
-		UTn = [UTn m];
+	if ~isequal(M(n, :), [0 0 0])
+        totalMinimaln = totalMinimaln + 1;
+		UTn = [UTn m];  %#ok<AGROW>
 	end
 end
 
-amts = [totalAmtChecked; totalUltrametric; totalMinimal];
+amts = [totalAmtChecked; totalUltrametric; totalMinimal; totalMinimaln];
 
