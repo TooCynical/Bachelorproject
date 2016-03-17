@@ -1,3 +1,5 @@
 function M = to01(m, n)
-%Todo: efficienter
-M = flipud((dec2bin(m, n) - 48)');
+
+% Get binary vectors from the convTable.
+global convTable;
+M = convTable(:, [m(1), m(2), m(3)]);

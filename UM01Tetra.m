@@ -1,9 +1,6 @@
 function [amts, UTn, UT] = UM01Tetra(n)
 
-% First get the minimal acute triangles in order.
-L = SortedAcute01Triang(n);
-
-% Count/Storagevariables
+% ---- COUNTING / STORING VARIABLES ----
 rawUT = [];
 UT = [];
 UTn = [];
@@ -12,6 +9,17 @@ totalUltrametric = 0;
 totalMinimal = 0;
 totalMinimaln = 0;
 
+% ---- GLOBAL TABLES ----
+% 01-Conversion table
+global convTable;
+convTable = de2bi(1:2^n-1, n)';
+% Column permutations.
+global perms3;
+perms3 = perms(1:3);
+
+
+% First get the minimal acute triangles in order.
+L = SortedAcute01Triang(n);
 
 % Loop through all combinations t = [v1 v2] where [v1 v2] is
 % a minimal acute triangle.
