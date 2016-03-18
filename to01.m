@@ -1,5 +1,5 @@
-function M = to01(m, n)
+function M = to01(m)
 
 % Get binary vectors from the convTable.
 global convTable;
-M = convTable(:, [m(1), m(2), m(3)]);
+M = convTable(:, m);
