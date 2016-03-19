@@ -13,7 +13,7 @@ totalMinimaln = 0;
 % ---- GLOBAL TABLES ----
 % 01-Conversion table
 global convTable;
-convTable = flipud((dec2bin(1:2^n-1, n) - 48)');
+convTable = [zeros(n, 1) flipud((dec2bin(1:2^n-1, n) - 48)')];
 % Column permutations.
 global perms3;
 perms3 = perms(1:3)';
