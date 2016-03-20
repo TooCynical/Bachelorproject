@@ -12,7 +12,7 @@ for k=0:3
         m = originalm;
         m([1:k-1 k+1:3], :) = bitxor(m(k, :), m([1:k-1 k+1:3], :));
     end
-    M = to01(m, n);
+    M = to01(m);
     % Loop over each column permutation.
     for i=perms3
         % Perform the column permutation.

@@ -23,12 +23,12 @@ for t=L
 					   totalAmtChecked = totalAmtChecked + 1;
 					   % Create a matrix (in dec-form and 01-form) from t and v3.
 					   m = [t; v3];
-					   M = to01(m, n);
+					   M = to01(m);
 					   % Add m to rawUT if it is ultrametric.
 					   if isGramUltrametric(M)==1
 					       rawUT = [rawUT m]; %#ok<AGROW>
-					   end
-				   end
+                       end
+                   end
 				end
 			end
 		end
