@@ -1,19 +1,20 @@
-function rawUT = findUMTetraFull(n)
+function rawUM = findUMSimplices(n)
 global totalAmtChecked;
 
 % First get the minimal acute triangles in order.
 L = SortedAcute01Triang(n);
 
-rawUT = [];
+rawUM = [];
 
+% Start with a minimal triangle and add n-2 more vertices.
 for t=L
-	for v3=1:2^n - 1
+	for i = nchoosek(1:2^n - 1, n-2)'
 		totalAmtChecked = totalAmtChecked + 1;
-		m = [t; v3];
+		m = [t; i];
 		M = to01(m);
 		% Add m to rawUT if it is ultrametric.
 		if isGramUltrametric(M)==1
-			rawUT = [rawUT m]; %#ok<AGROW>
+			rawUM = [rawUM m]; %#ok<AGROW>
 		end
 	end
 end

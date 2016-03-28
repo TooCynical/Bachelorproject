@@ -29,7 +29,7 @@ totalUltrametric = size(rawUT, 2);
 
 % Now filter for minimality.
 for m=rawUT
-    if isMinimalUMTetra(m ,n)==1
+    if isMinimalUMTetra(m, n)==1
         totalMinimal = totalMinimal + 1;
         UT = [UT m];  %#ok<AGROW>
     end
