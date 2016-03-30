@@ -1,4 +1,4 @@
-function UM = UM01Simplices(n)
+function [amts, UM] = UM01Simplices(n)
 
 % ---- COUNTING / STORING VARIABLES ----
 rawUM = [];
@@ -19,6 +19,7 @@ global permsn;
 permsn = perms(1:n)';
 
 rawUM = findUMSimplices(n);
+totalUltrametric = size(rawUM, 2);
 
 % Now filter for minimality.
 for m=rawUM
@@ -28,4 +29,4 @@ for m=rawUM
     end
 end
 
-rawUM
+amts = [totalAmtChecked; totalUltrametric; totalMinimal; totalMinimaln];

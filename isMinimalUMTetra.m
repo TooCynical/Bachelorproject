@@ -2,6 +2,7 @@ function b = isMinimalUMTetra(m, n)
 
 b = 0;
 originalm = m;
+originalM = to01(m);
 % Precalculating this saves quite some time...
 global perms3;
 
@@ -25,6 +26,14 @@ for k=0:3
 
         % Now check if this representation is smaller.
         if lexoCompare(newm, originalm) == 1
+            if k == 0
+               %if ~newm(1) == originalm(1)
+                    disp('...')
+                    i
+                    newM
+                    originalM
+               %end
+            end
             return
         end
     end
