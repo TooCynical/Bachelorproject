@@ -1,5 +1,10 @@
 function t = isGramUltrametric(P)
-t = isUltrametric(P.' * P);
+t = 1;
+G = P.' * P;
+for i = nchoosek(1:size(P,2), 3)'
+    GT = G(i, i);
+    t = t && isUltrametric(GT);
+end
 end
 
 % Returns one if input is strictly ultrametric, zero otherwise.
