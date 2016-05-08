@@ -19,14 +19,16 @@ global permsn;
 permsn = perms(1:n)';
 
 rawUM = findUMSimplices(n);
+%rawUM = findUMSimplicesBrute(n)
+
 totalUltrametric = size(rawUM, 2);
 
-% Now filter for minimality.
-for m=rawUM
-    if isMinimalUMSimplex(m, n)==1
-        totalMinimal = totalMinimal + 1;
-        UM = [UM m];  %#ok<AGROW>
-    end
-end
+% % Now filter for minimality.
+% for m=rawUM
+%     if isMinimalUMSimplex(m, n)==1
+%         totalMinimal = totalMinimal + 1;
+%         UM = [UM m];  %#ok<AGROW>
+%     end
+% end
 
 amts = [totalAmtChecked; totalUltrametric; totalMinimal; totalMinimaln];

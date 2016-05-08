@@ -26,14 +26,14 @@ for k=0:3
 
         % Now check if this representation is smaller.
         if lexoCompare(newm, originalm) == 1
-            if k == 0
-               %if ~newm(1) == originalm(1)
-                    disp('...')
-                    i
-                    newM
-                    originalM
-               %end
-            end
+%             if k == 0
+%                %if ~newm(1) == originalm(1)
+%                     disp('...')
+%                     i
+%                     newM
+%                     originalM
+%                %end
+%             end
             return
         end
     end

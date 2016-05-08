@@ -32,6 +32,12 @@ if sum(upper == min(upper)) < 2 || sum(lower == min(lower)) < 2
     return
 end
 
+% Check if no elements are zero
+if all(G(:)) == 0
+   t = 0;
+   return
+end
+
 % If nothing is wrong return one.
 t = 1;
 end
