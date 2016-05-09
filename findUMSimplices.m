@@ -20,9 +20,13 @@ function b = addVertex(v, poss)
     % Check each possible next vertex larger than the previous ones.
     totalAmtChecked = totalAmtChecked + 1;
     if size(v, 1) < n
-        for m = v(end):2^n-1
-            if checkLastUM([v; m]) == 1
-                addVertex([v; m], poss)
+        for m = v(end)+1:2^n-1
+            t = [v; m];
+            T = to01(t);
+            if sum(T(:, end)) >= sum(T(:, 1))
+                if checkLastUM(t) == 1
+                    addVertex(t, poss)
+                end
             end
         end
     else
@@ -30,16 +34,16 @@ function b = addVertex(v, poss)
     end
 end
 
-%Check whether all tetraeders containing the last vertex of V (and two
-%different vertices) are ultrametric.
+% Check whether all tetraeders containing the last vertex of V (and two
+% different vertices) are ultrametric.
 function b = checkLastUM(v)
     % Loop through all combinations of three vertices in v containing the
     % last vertex and two earlier ones.
-    for i = nc2(:, 1:kc2(size(v, 1) - 1))
-        M = to01([v(i); v(end)]);
+    for j = nc2(:, 1:kc2(size(v, 1) - 1))
+        M = to01([v(j); v(end)]);
         if isGramUltrametric(M)==0
             b = 0;
-            return;
+            return
         end
     end
     b = 1;
@@ -47,7 +51,7 @@ end
 
 % Call addVertex for each of the minimal UM tetraeders.
 for v=L
-    addVertex(v, v(end):2^n);
+    addVertex(v, v(end)+1:2^n);
 end
 end
 
