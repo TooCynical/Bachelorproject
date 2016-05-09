@@ -23,7 +23,7 @@ rawUM = findUMSimplices(n);
 
 totalUltrametric = size(rawUM, 2);
 
-% % Now filter for minimality.
+% Now filter for minimality.
 % for m=rawUM
 %     if isMinimalUMSimplex(m, n)==1
 %         totalMinimal = totalMinimal + 1;

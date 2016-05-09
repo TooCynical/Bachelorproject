@@ -6,6 +6,14 @@ rawUM = [];
 % First get the minimal UM tetraeders in order.
 [~, ~, L] = UM01Tetra(n, 1);
 
+% Get all combinations of 2 numbers from 1:n in order of maximal element.
+nc2 = rot90(n+1 - nchoosek(1:n, 2), 2)';
+% Get the amount of combinations of 2 numbers from 1:k for all 3 <= k <= n.
+kc2 = zeros(n, 1);
+for i = 3:n
+    kc2(i) = nchoosek(i, 2);
+end
+
 % Recursively add new vertices to a set of (at least three) UM
 % vertices.
 function b = addVertex(v, poss)
@@ -18,18 +26,16 @@ function b = addVertex(v, poss)
             end
         end
     else
-        M = to01(v);
-        if isGramUltrametric(M)==1
-            rawUM = [rawUM v];
-        end
+        rawUM = [rawUM v];
     end
 end
 
 %Check whether all tetraeders containing the last vertex of V (and two
 %different vertices) are ultrametric.
 function b = checkLastUM(v)
-    nc2 = nchoosek(1:size(v, 1)-1, 2)';
-    for i = nc2
+    % Loop through all combinations of three vertices in v containing the
+    % last vertex and two earlier ones.
+    for i = nc2(:, 1:kc2(size(v, 1) - 1))
         M = to01([v(i); v(end)]);
         if isGramUltrametric(M)==0
             b = 0;
@@ -41,7 +47,7 @@ end
 
 % Call addVertex for each of the minimal UM tetraeders.
 for v=L
-    addVertex(v, 1:2^n);
+    addVertex(v, v(end):2^n);
 end
 end
 

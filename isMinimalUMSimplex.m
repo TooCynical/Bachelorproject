@@ -16,10 +16,13 @@ for k=0:n
     % Loop over each column permutation.
     for i=permsn
         % Perform the column permutation.
-        newM = M(1:n, i);
+        newM = M(:, i);
         
-        % Then sort the rows (easiest in 0/1-form).
-        newM = flipud(sortrows(newM));
+        [~, ord] = sort(todecrows(newM, n), 'descend');
+        newM = newM(ord, 1:n);
+                
+%         % Then sort the rows (easiest in 0/1-form).
+%         newM = flipud(sortrows(newM));
 
         newm = todec(newM, n);
 
