@@ -17,6 +17,9 @@ convTable = [zeros(n, 1) flipud((dec2bin(1:2^n-1, n) - 48)')];
 % Column permutations.
 global permsn;
 permsn = perms(1:n)';
+% Steinhaus-Johnson-Trotter Swaps
+global EhrlichTable;
+EhrlichTable = Ehrlich(n);
 
 display('Finding UM Simplices...')
 rawUM = findUMSimplices(n);
@@ -31,7 +34,7 @@ count = 0;
 for m=rawUM
     count = count + 1;
     display([num2str(count) '/' num2str(size(rawUM, 2))])
-    if isMinimalUMSimplex(m, n)==1
+    if isMinimalUMSimplex01(m, n)==1
         totalMinimal = totalMinimal + 1;
         UM = [UM m];  %#ok<AGROW>
     end

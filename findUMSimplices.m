@@ -1,6 +1,7 @@
 function rawUM = findUMSimplices(n)
 
 global totalAmtChecked;
+global convTable;
 rawUM = [];
 
 % First get the minimal UM tetraeders in order.
@@ -16,21 +17,33 @@ end
 
 % Recursively add new vertices to a set of (at least three) UM
 % vertices.
-function b = addVertex(v, poss)
-    % Check each possible next vertex larger than the previous ones.
+function b = addVertex(m, w, poss)
     totalAmtChecked = totalAmtChecked + 1;
-    if size(v, 1) < n
-        for m = v(end)+1:2^n-1
-            t = [v; m];
-            T = to01(t);
-            if sum(T(:, end)) >= sum(T(:, 1))
-                if checkLastUM(t) == 1
-                    addVertex(t, poss)
-                end
+    new_poss = [];
+    if size(m, 1) < n
+        % Check each possible next vertex larger than the previous ones.
+        for v = poss
+            if v > m(end) && checkLastUM([m; v]) == 1
+                new_poss = [new_poss v];
+            end
+        end
+        
+        % Check if enough possible vertices are left.
+        if size(new_poss, 2) < n - size(m, 1)
+            return
+        end
+        
+        % Call the recursion for each possible vertex that retains
+        % row order.
+        for v = new_poss
+            % Update row numbers
+            new_w = 2 * w + convTable(:, v);
+            if isequal(new_w, sort(new_w, 'descend')) == 1
+                addVertex([m; v], new_w, new_poss);
             end
         end
     else
-        rawUM = [rawUM v];
+        rawUM = [rawUM m];
     end
 end
 
@@ -50,8 +63,10 @@ function b = checkLastUM(v)
 end
 
 % Call addVertex for each of the minimal UM tetraeders.
-for v=L
-    addVertex(v, v(end)+1:2^n);
+for m=L
+    M = to01(m);
+    w = M * [4; 2; 1];
+    addVertex(m, w, m(end)+1:2^n-1);
 end
 end
 

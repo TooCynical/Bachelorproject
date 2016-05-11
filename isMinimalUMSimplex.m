@@ -20,9 +20,6 @@ for k=0:n
         
         [~, ord] = sort(todecrows(newM, n), 'descend');
         newM = newM(ord, 1:n);
-                
-%         % Then sort the rows (easiest in 0/1-form).
-%         newM = flipud(sortrows(newM));
 
         newm = todec(newM, n);
 
