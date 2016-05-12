@@ -3,8 +3,8 @@ function b = isMinimalUMSimplex01(m, n)
 b = 0;
 originalm = m;
 
-% Get the rows of m as binary vectors.
-% TODO
+% Get the rows of m as binary vectors (basically m^T as 01-matrix).
+% TODO.
 
 global EhrlichTable;
 
@@ -17,8 +17,13 @@ for k=0:n
     end
     % Loop over all row permutations using Ehrlich swaps.
     for p = EhrlichTable
+ 
         % Swap row 1 and p and sort the columns of the result.
-        m = rowSwap(m, 1, p);
+        val1 = bitget(m, 1);
+        val2 = bitget(m, p);
+        
+        m = bitset(m, p, val1);
+        m = bitset(m, 1, val2);
         
         % Now check if this representation is smaller.
         if lexoCompare(sort(m), originalm) == 1
@@ -27,12 +32,4 @@ for k=0:n
     end
 end
 b = 1;
-end
-
-% Swap two given rows in m using bitget and bitset.
-function t = rowSwap(m, r1, r2)
-    val1 = bitget(m, r1);
-    val2 = bitget(m, r2);
-    t = bitset(m, r2, val1);
-    t = bitset(t, r1, val2);
 end
