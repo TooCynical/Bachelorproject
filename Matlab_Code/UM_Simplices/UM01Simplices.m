@@ -1,4 +1,4 @@
-function [amts, UM] = UM01Simplices(n)
+function [UM, amts] = UM01Simplices(n)
 
 % ---- COUNTING / STORING VARIABLES ----
 rawUM = [];
@@ -27,17 +27,17 @@ display(['Found ' num2str(size(rawUM, 2)) ' UM Simplices.'])
 %rawUM = findUMSimplicesBrute(n)
 
 totalUltrametric = size(rawUM, 2);
-
+UM = rawUM;
 %Now filter for minimality.
-display('Filtering for minimality...')
-count = 0;
-for m=rawUM
-    count = count + 1;
-    display([num2str(count) '/' num2str(size(rawUM, 2))])
-    if isMinimalUMSimplex01(m, n)==1
-        totalMinimal = totalMinimal + 1;
-        UM = [UM m];  %#ok<AGROW>
-    end
-end
+% display('Filtering for minimality...')
+% count = 0;
+% for m=rawUM
+%     count = count + 1;
+%     display([num2str(count) '/' num2str(size(rawUM, 2))])
+%     if isMinimalUMSimplex01(m, n)==1
+%         totalMinimal = totalMinimal + 1;
+%         UM = [UM m];  %#ok<AGROW>
+%     end
+% end
 
 amts = [totalAmtChecked; totalUltrametric; totalMinimal; totalMinimaln];

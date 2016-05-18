@@ -37,16 +37,6 @@ end
 
 end
 
-% % Determines whether a nx3 matrix is ultrametric by its triangle 
-% % blocklengths and third vector blocklengths
-% function t = isUltrametricByBlockLengths(blockLengths, v)
-% 
-% % First diagonal dominancy
-% if 
-% 
-% 
-% end
-
 % Finds the length of the blocks:
 % [1 1]
 %  ...  d1
