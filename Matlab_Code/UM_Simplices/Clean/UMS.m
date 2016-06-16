@@ -38,7 +38,6 @@ function U = UMS(n, k)
         % Check SRE on first time.
         if size(m,1) == 4 
             if ~checkSRE(m, M, w)
-                display 'HAPPENED.'
                 return
             end
         end
@@ -85,7 +84,7 @@ function U = UMS(n, k)
         end
         b = 1;
     end
-
+    U = sortrows(U')';
 %     totalAmtChecked
 end
 
@@ -98,8 +97,8 @@ function b = checkSRE(m, M, w)
         b = 1;
         return
     end
-   rs = N * fliplr(2.^(1:size(N, 2)))';
-   b = isequal(rs, sort(rs, 'descend'));
+   rs = sum(N);
+   b = (min(rs) == rs(1));
 end
 
 
