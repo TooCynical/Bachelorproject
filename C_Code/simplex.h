@@ -23,8 +23,9 @@ Simplex *make_tet(int, int, int, int);
 
 int *calc_rows(int, int, int, int);
 
-int check_ultrametric(Simplex*);
+int check_ultrametric(Simplex*, int);
 int check_ultrametric_tet(int, int, int, int);
-
+int popcount(int, int);
 
 void add_vertex(Simplex*, int);
+void print_simplex(Simplex *s, int verb);

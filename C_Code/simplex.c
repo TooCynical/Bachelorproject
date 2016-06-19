@@ -76,7 +76,7 @@ Simplex *make_tet(int n, int c1, int c2, int c3) {
 
 /* Print the integer representations of the 
  * columns and rows of a simplex */
-void print_simplex(Simplex *s) {
+void print_simplex(Simplex *s, int verb) {
 	int i;
 	printf("[");
 	for(i = 0; i < (*s).n_cols; i++) {
@@ -85,17 +85,21 @@ void print_simplex(Simplex *s) {
 		else
 			printf("%d", (*s).cols[i]);
 	}
-	printf("] [");
-	for(i = 0; i < (*s).dim; i++) {
-		if (i < (*s).dim - 1)
-			printf("%d ", (*s).rows[i]);
-		else
-			printf("%d", (*s).rows[i]);
+	if (verb) {
+		printf("] [");
+		for(i = 0; i < (*s).dim; i++) {
+			if (i < (*s).dim - 1)
+				printf("%d ", (*s).rows[i]);
+			else
+				printf("%d", (*s).rows[i]);
+		}
+		printf("] ");
+		printf("(%d:%d)", (*s).n_cols, (*s).dim);
+		printf(" - %d exts.", (*s).n_ext);
+		printf("\n");
 	}
-	printf("] ");
-	printf("(%d:%d)", (*s).n_cols, (*s).dim);
-	printf(" - %d exts.", (*s).n_ext);
-	printf("\n");
+	else
+		printf("]\n");
 }
 
 void free_simplex(Simplex *s) {
@@ -109,26 +113,79 @@ void free_simplex(Simplex *s) {
 * v1, v2, v3 is ultrametric */
 int check_ultrametric_tet(int n, int v1, int v2, int v3) {
 	int g11, g12, g13, g22, g23, g33, i;
+	int b1, b2, b3;
 	g11 = g12 = g13 = g22 = g23 = g33 = 0;
-	for (i = 0; i < n; i++;) {
-		
+	/* Calculate the Gramian. */
+	for (i = 0; i < n; i++) {
+		b1 = BITGET(v1, i);
+		b2 = BITGET(v2, i);
+		b3 = BITGET(v3, i);
+
+		if (b1)
+			g11 ++;
+		if (b2)
+			g22 ++;
+		if (b3)
+			g33 ++;
+		if (b1 && b2)
+			g12 ++;
+		if (b1 && b3)
+			g13 ++;
+		if (b2 && b3)
+			g23 ++;
 	}
+	// printf("%d %d %d\n- %d %d\n- - %d\n\n", g11, g12, g13, g22, g23, g33);
+	
+	/* Check maximality of diagonal elements */
+	if (g11 <= g12 || g11 <= g13)
+		return 0;
+	if (g22 <= g12 || g22 <= g23)
+		return 0;
+	if (g33 <= g13 || g33 <= g23)
+		return 0;
+
+	/* Check non-unique minimum */
+	if ((g12 < g13 && g12 < g23) ||
+        (g13 < g12 && g13 < g23) ||
+        (g23 < g12 && g23 < g13))
+        return 0;
+
+    /* If everything is fine, return 1 */
+	return 1;
 }
 
-/* Returns whether s* is an ultrametric simplex,
- * assuming that s* - s_end is. */
-int check_ultrametric(Simplex *s) {
+/* Returns whether s* + v3 is an ultrametric simplex,
+ * assuming that s* is. */
+int check_ultrametric(Simplex *s, int v3) {
 
-	int n = (*s).n_cols - 1;
+	int n = (*s).n_cols;
 	
 	int **combs = nchoose2(n);
-	int v1, v2, v3, i;
-	v3 = (*s).cols[n];
+	int v1, v2, i;
+	
+	/* Check that all tetraeders containing the
+	 * last vertex of s are ultrametric */
 	for (i = 0; i < (n * (n - 1)) / 2; i++) {
 		v1 = (*s).cols[combs[i][0]];
 		v2 = (*s).cols[combs[i][1]];
-		printf("%d, %d\n", v1, v2);
+		// printf("%d, %d, %d\n", v1,v2,v3);
+		if (!check_ultrametric_tet((*s).dim, v1, v2, v3)) {
+			free_combs(combs, n);
+			return 0;
+		}
+			
 	}
-	return 0;
+
+	/* If everything is fine, return 1 */
+	free_combs(combs, n);
+	return 1;
 }
 
+int popcount(int n, int a) {
+	int i, j;
+	for (i = 0; i < n; i++){
+		if (BITGET(a, i))
+			j++;
+	}
+	return j;
+}
