@@ -35,12 +35,12 @@ function U = UMS(n, k)
         totalAmtChecked = totalAmtChecked + 1;
         new_poss = [];
         
-        % Check SRE on first time.
-        if size(m,1) == 4 
-            if ~checkSRE(m, M, w)
-                return
-            end
-        end
+%         % Check SRE on first time.
+%         if size(m,1) == 4 
+%             if ~checkSRE(m, M, w)
+%                 return
+%             end
+%         end
         
         if size(m, 1) < k
             % Check each possible next vertex larger than the previous ones.
