@@ -8,6 +8,7 @@ void extend(Simplex *s) {
 
 	if ((*s).dim == (*s).n_cols) {
 		count ++;
+		#pragma omp critical
 		print_simplex_clean(s);
 		free_simplex(s);
 		return;
