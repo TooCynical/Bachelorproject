@@ -157,7 +157,7 @@ void free_simplex(Simplex *s) {
 }
 
 /* Returns whether the n-tetraeder given by 
-* v1, v2, v3 is ultrametric */
+* v1, v2, v3 is ultrametric and acute. */
 int check_ultrametric_tet(int n, int v1, int v2, int v3) {
 	int g11, g12, g13, g22, g23, g33, i;
 	int b1, b2, b3;
@@ -181,7 +181,6 @@ int check_ultrametric_tet(int n, int v1, int v2, int v3) {
 		if (b2 && b3)
 			g23 ++;
 	}
-	// printf("%d %d %d\n- %d %d\n- - %d\n\n", g11, g12, g13, g22, g23, g33);
 	
 	/* Check maximality of diagonal elements */
 	if (g11 <= g12 || g11 <= g13)
@@ -196,6 +195,10 @@ int check_ultrametric_tet(int n, int v1, int v2, int v3) {
         (g13 < g12 && g13 < g23) ||
         (g23 < g12 && g23 < g13))
         return 0;
+
+    /* Check no zero elements */
+    if (g12 == 0 || g13 == 0 || g23 == 0) 
+		return 0;
 
     /* If everything is fine, return 1 */
 	return 1;
