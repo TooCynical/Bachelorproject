@@ -1,14 +1,15 @@
 #include "simplex.h"
 #include "combs.h"
 
+int count = 0;
 
 void extend(Simplex *s) {
 	int i,j;
-	// printf("Extending: ");
-	// print_simplex(s);
 
 	if ((*s).dim == (*s).n_cols) {
-		print_simplex(s, 0);
+		count ++;
+		print_simplex_clean(s);
+		free_simplex(s);
 		return;
 	}
 
@@ -22,6 +23,7 @@ void extend(Simplex *s) {
 		}
 	}
 	(*s).n_ext = j;
+
 	/* Remove possible extensions that are have too few 
 	 * ones in the last vertex */
 	j = 0;
@@ -43,35 +45,32 @@ void extend(Simplex *s) {
 		}
 	}
 	(*s).n_ext = j;
-
-	/* Extend the good new simplices */
+	
+	/* Extend the simplices that keep row order */
 	Simplex *temp;
 	for (i = 0; i < (*s).n_ext; i++) {
 	 	temp = copy_simplex(s);
 	 	add_vertex(temp, (*s).ext[i]);
-	 	extend(temp);
-	 }		
+	 	if (check_row_order(temp))
+	 		extend(temp);
+	 	else
+	 		free_simplex(temp);
+	 }
+	 free_simplex(s);
 }
+
 
 int main() {
 	int n, k, i, a, b, c;
 	Simplex *t;
 	scanf("%d %d\n", &n, &k);
 
+	#pragma omp parallel for
 	for (i = 0; i < k; i++) {
 		scanf("%d %d %d\n", &a, &b, &c);
 		t = make_tet(n, a, b, c);
 		extend(t);
 	}
-
-
-	// Simplex *test = make_tet(n, 3, 5, 6);
-	//Simplex *copy = copy_simplex(test);
-
-	// print_simplex(test);
-	// print_simplex(copy);
-	//printf("%d\n", __builtin_popcount(n));
-	// extend(test);
-	// printf("%d\n", check_ultrametric(test, 8));
+	printf("%d\n", count);
 }
 

@@ -25,7 +25,12 @@ int *calc_rows(int, int, int, int);
 
 int check_ultrametric(Simplex*, int);
 int check_ultrametric_tet(int, int, int, int);
-int popcount(int, int);
+int check_row_order(Simplex*);
+int cmp_simplices(Simplex *s, Simplex *t);
 
 void add_vertex(Simplex*, int);
-void print_simplex(Simplex *s, int verb);
+void print_simplex(Simplex*);
+void print_simplex_clean(Simplex*);
+void sort_simplices(int k, Simplex **simplices);
+
+

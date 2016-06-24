@@ -31,6 +31,36 @@ Simplex *copy_simplex(Simplex *s) {
 	return r;
 }
 
+/* Returns s <= t, based on lexicographical ordering
+ * of the columns. */
+int cmp_simplices(Simplex *s, Simplex *t) {
+	int i;	
+	for (i = 0; i < (*s).n_cols; i++) {
+		if ((*s).cols[i] < (*t).cols[i])
+			return 1;
+		if ((*s).cols[i] > (*t).cols[i])
+			return 0;
+	}
+	return 1;
+}
+
+/* Sort an array of k simplices in ascending order, based
+ * on lexicographical ordering of the columns. This uses 
+ * bubble sort (O(n^2)) which is not optimal but good enough. */
+void sort_simplices(int k, Simplex **simplices) {
+	Simplex *temp;
+	int i, j;
+	for (i = 0; i < k; i++) {
+		for (j = 1; j < k-i; j++) {
+			if (cmp_simplices(simplices[j], simplices[j-1])) {
+				temp = simplices[j];
+				simplices[j] = simplices[j-1];
+				simplices[j-1] = temp;
+			}
+		}
+	}
+}
+
 /* Calculate the integer representations of the rows 
  * of a tetraeder. */
 int *calc_rows(int n, int c1, int c2, int c3) {
@@ -44,12 +74,22 @@ int *calc_rows(int n, int c1, int c2, int c3) {
 	return rows;
 }
 
+int check_row_order(Simplex *s) {
+	int i;
+	for (i = 0; i < (*s).dim - 1; i++){
+		if ((*s).rows[i] < (*s).rows[i + 1]) {
+			return 0;
+		}
+	}
+	return 1;
+}
+
 void add_vertex(Simplex *s, int v) {
 	(*s).cols[(*s).n_cols] = v;
 	(*s).n_cols ++;
 	int i;
 	for (i = 0; i < (*s).dim; i++) {
-		(*s).rows[i] = 2 * (*s).rows[i] + BITGET(v, i);
+		(*s).rows[i] = 2 * ((*s).rows[i]) + BITGET(v, i);
 	}
 }
 
@@ -74,9 +114,20 @@ Simplex *make_tet(int n, int c1, int c2, int c3) {
 	return s;
 }
 
+void print_simplex_clean(Simplex *s) {
+	int i;
+	for(i = 0; i < (*s).n_cols; i++) {
+		if (i < (*s).n_cols - 1)
+			printf("%d ", (*s).cols[i]);
+		else
+			printf("%d", (*s).cols[i]);
+	}
+	printf("\n");
+}
+
 /* Print the integer representations of the 
  * columns and rows of a simplex */
-void print_simplex(Simplex *s, int verb) {
+void print_simplex(Simplex *s) {
 	int i;
 	printf("[");
 	for(i = 0; i < (*s).n_cols; i++) {
@@ -85,21 +136,17 @@ void print_simplex(Simplex *s, int verb) {
 		else
 			printf("%d", (*s).cols[i]);
 	}
-	if (verb) {
-		printf("] [");
-		for(i = 0; i < (*s).dim; i++) {
-			if (i < (*s).dim - 1)
-				printf("%d ", (*s).rows[i]);
-			else
-				printf("%d", (*s).rows[i]);
-		}
-		printf("] ");
-		printf("(%d:%d)", (*s).n_cols, (*s).dim);
-		printf(" - %d exts.", (*s).n_ext);
-		printf("\n");
+	printf("] [");
+	for(i = 0; i < (*s).dim; i++) {
+		if (i < (*s).dim - 1)
+			printf("%d ", (*s).rows[i]);
+		else
+			printf("%d", (*s).rows[i]);
 	}
-	else
-		printf("]\n");
+	printf("] ");
+	printf("(%d:%d)", (*s).n_cols, (*s).dim);
+	printf(" - %d exts.", (*s).n_ext);
+	printf("\n");
 }
 
 void free_simplex(Simplex *s) {
@@ -179,13 +226,4 @@ int check_ultrametric(Simplex *s, int v3) {
 	/* If everything is fine, return 1 */
 	free_combs(combs, n);
 	return 1;
-}
-
-int popcount(int n, int a) {
-	int i, j;
-	for (i = 0; i < n; i++){
-		if (BITGET(a, i))
-			j++;
-	}
-	return j;
 }
