@@ -1,3 +1,10 @@
+/* 	Lucas Slot - lfh.slot@gmail.com
+ *	University of Amsterdam
+ *	simplex.h
+ * 	
+ *  Header file for simplex.c
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

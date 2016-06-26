@@ -1,3 +1,31 @@
+/* 	Lucas Slot - lfh.slot@gmail.com
+ *	University of Amsterdam
+ *	simplex.c
+ * 	
+ * 	Contains a basic implementation of simplices
+ *  in C. Specifically, the following is supported:
+ *		make_simplex(n) 		: returns a pointer to an
+ *						      	  n-dimensional simplex.
+ *		copy_simplex(s) 		: returns a pointer to a
+ *						  	  	  carbon copy of a simplex.
+ *		cmp_simplices(s,t) 		: compares two simplices
+ *							  	  with respect to lexico-
+ *							  	  graphical ordering.
+ *		sort_simplices(ss)  	: sorts an array of simplices
+ *							  	  in ascending order.
+ *		calc_rows(s)			: returns the row representations
+ *							  	  of a tetraeder.
+ *	    check_row_order(s)  	: returns whether a simplex satisfies
+ *							  	  the block property.
+ * 		add_vertex(s)       	: adds a vertex to a simplex.
+ *		make_tet(a, b, c)   	: creates a tetraeder having a, b
+ *							  	  and c as vertices.
+ *	    print_simplex(s)    	: prints full information of a simplex.
+ *		print_simplex_clean(s)  : prints basic information of a simplex.
+ * 		check_ultrametric(s)    : returns whether a simplex is ultrametric,
+ *								  assuming it is without its last vertex.
+ */
+
 #include "simplex.h"
 
 /* Basic initializer for a simplex. */
