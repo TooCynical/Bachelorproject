@@ -89,6 +89,6 @@ int *ehrlich(int n) {
 	table[0][i + dir] = temp;
 	
 	/* Change direction of swapped element */
-	if (i + dir == 0 || i + dir = n - 1)
-
+	if (i + dir == 0 || i + dir == n - 1)
+		i;
 }
