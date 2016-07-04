@@ -112,14 +112,13 @@ void filterUMS(int n, int k, Simplex **simplices) {
 	sort_simplices(k, simplices);
 	igraph_t ***o = calloc(k, sizeof(igraph_t**));
 	int *m = calloc(k, sizeof(int));
-	for (i = 0; i < k; i++) {
-		o[i] = associated_graphs(simplices[i]);
+	for (i = 0; i < k; i++)
 		m[i] = 1;
-	}
 
 	/* For each simplex, check if it is 0/1-equivalent
 	 * to a smaller one. If not: print it. */
 	for (i = 0; i < k; i++) {
+		o[i] = associated_graphs(simplices[i]);
 		for (j = 0; j <= i; j++) {
 			if (j==i) {
 				print_simplex_clean(simplices[i]);
@@ -127,16 +126,19 @@ void filterUMS(int n, int k, Simplex **simplices) {
 			}
 			if (m[j] && check_01equivalent(n, o[i], o[j])) {
 				m[i] = 0;
+				free_associated_graphs(n, o[i]);
 				break;
 			}
 		}
 	}
 
 	/* Finally clear up the memory */
-	for (i = 0; i < k; i++)
-		free_associated_graphs(n, o[i]);
+	for (i = 0; i < k; i++) {
+		if (m[i])
+			free_associated_graphs(n, o[i]);
+	}
 	free(o);
-	free(m)
+	free(m);
 }
 
 /* Reads simplices from an input file and prints

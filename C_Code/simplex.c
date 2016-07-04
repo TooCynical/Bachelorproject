@@ -59,34 +59,32 @@ Simplex *copy_simplex(Simplex *s) {
 	return r;
 }
 
-/* Returns s <= t, based on lexicographical ordering
- * of the columns. */
-int cmp_simplices(Simplex *s, Simplex *t) {
-	int i;	
-	for (i = 0; i < (*s).n_cols; i++) {
-		if ((*s).cols[i] < (*t).cols[i])
+/* Returns 
+ * 	 -1 if s < t,
+ *	  0 if s = t,
+ *	  1 if s > t,
+ * based on lexicographical ordering. */
+int cmp_simplices(const void *s, const void *t) {
+	int i;
+	/* Convert back to Simplex* */
+	Simplex *s_s = *((Simplex**)s);
+	Simplex *s_t = *((Simplex**)t);
+
+	/* Compare vertices until two are unequal */
+	for (i = 0; i < (*s_s).n_cols; i++) {
+		if ((*s_s).cols[i] < (*s_t).cols[i])
+			return -1;
+		if ((*s_s).cols[i] > (*s_t).cols[i])
 			return 1;
-		if ((*s).cols[i] > (*t).cols[i])
-			return 0;
 	}
-	return 1;
+	return 0;
 }
 
 /* Sort an array of k simplices in ascending order, based
  * on lexicographical ordering of the columns. This uses 
  * bubble sort (O(n^2)) which is not optimal but good enough. */
 void sort_simplices(int k, Simplex **simplices) {
-	Simplex *temp;
-	int i, j;
-	for (i = 0; i < k; i++) {
-		for (j = 1; j < k-i; j++) {
-			if (cmp_simplices(simplices[j], simplices[j-1])) {
-				temp = simplices[j];
-				simplices[j] = simplices[j-1];
-				simplices[j-1] = temp;
-			}
-		}
-	}
+	qsort(simplices, k, sizeof(Simplex*), cmp_simplices);
 }
 
 /* Calculate the integer representations of the rows 

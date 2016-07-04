@@ -92,7 +92,6 @@ int main() {
 	Simplex *t;
 	scanf("%d %d\n", &n, &k);
 
-	#pragma omp parallel for
 	for (i = 0; i < k; i++) {
 		scanf("%d %d %d\n", &a, &b, &c);
 		t = make_tet(n, a, b, c);

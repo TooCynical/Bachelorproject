@@ -33,7 +33,7 @@ int *calc_rows(int, int, int, int);
 int check_ultrametric(Simplex*, int);
 int check_ultrametric_tet(int, int, int, int);
 int check_row_order(Simplex*);
-int cmp_simplices(Simplex *s, Simplex *t);
+int cmp_simplices(const void*, const void*);
 
 void add_vertex(Simplex*, int);
 void print_simplex(Simplex*);
