@@ -4,6 +4,8 @@ global totalAmtChecked;
 L = SortedAcute01Triang(n);
 
 rawUT = [];
+convTable = [zeros(n, 1) MakeN(n)];
+
 
 %Loop through all combinations t = [v1 v2] where [v1 v2] is
 %a minimal acute triangle.
