@@ -81,8 +81,7 @@ int cmp_simplices(const void *s, const void *t) {
 }
 
 /* Sort an array of k simplices in ascending order, based
- * on lexicographical ordering of the columns. This uses 
- * bubble sort (O(n^2)) which is not optimal but good enough. */
+ * on lexicographical ordering of the columns. */
 void sort_simplices(int k, Simplex **simplices) {
 	qsort(simplices, k, sizeof(Simplex*), cmp_simplices);
 }
